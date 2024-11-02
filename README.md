@@ -10,6 +10,10 @@
 ### 사용 방법
 repository 상단에 use template를 통해서 사용할 수 있습니다.
 
+> 튜토리얼 image와 README 부분은 프로젝트 세팅 완료시 삭제해주세요.
+
+![img.png](img.png)
+
 아래와 같이 패키지들이 구성되어 있습니다.
 
 - domain
