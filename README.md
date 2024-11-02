@@ -64,3 +64,9 @@ jwt:
 ### Docker
 
 Dockerfile이 작성되어있습니다. 만약 다른 방식으로 배포를 진행하게 된다면 과감하게 삭제해주세요
+
+### .github
+
+Pull Request Template과 Issue Template가 존재합니다.
+
+이슈 템플릿은 todo, bug로 구분되어 있으며, 필요시 변경 가능합니다.
