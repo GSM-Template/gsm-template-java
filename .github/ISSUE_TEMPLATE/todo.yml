@@ -1,0 +1,16 @@
+name: "Todo"
+description: "todo"
+body:
+
+  - type: textarea
+    attributes:
+      label: Describe
+      description: |
+        [Description] todo
+      placeholder: |
+        create a feature
+  - type: textarea
+    attributes:
+      label: Additional
+      description: |
+        please let me know about additional information.

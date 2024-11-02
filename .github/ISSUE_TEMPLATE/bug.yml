@@ -1,0 +1,16 @@
+name: "Bug"
+description: "Bug Issue 👾"
+labels: bug
+body:
+  - type: textarea
+    attributes:
+      label: Describe
+      description: |
+        [Description] Description of Bug
+      placeholder: |
+        just merge even if generate a conflict
+  - type: textarea
+    attributes:
+      label: Additional
+      description: |
+        please let me know about additional information.
