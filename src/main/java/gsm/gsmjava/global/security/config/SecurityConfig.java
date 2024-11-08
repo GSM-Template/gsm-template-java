@@ -1,5 +1,7 @@
 package gsm.gsmjava.global.security.config;
 
+import gsm.gsmjava.global.security.handler.CustomAccessDeniedHandler;
+import gsm.gsmjava.global.security.handler.CustomAuthenticationEntryPointHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +23,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final CustomAccessDeniedHandler accessDeniedHandler;
+    private final CustomAuthenticationEntryPointHandler authenticationEntryPoint;
+
     @Configuration
     @EnableWebSecurity
     public class LocalSecurityConfig {
@@ -36,8 +41,12 @@ public class SecurityConfig {
             http.formLogin(AbstractHttpConfigurer::disable)
                     .httpBasic(AbstractHttpConfigurer::disable);
 
-            http.sessionManagement(sessionManagement ->
-                    sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            http.exceptionHandling(handling -> handling
+                    .accessDeniedHandler(accessDeniedHandler)
+                    .authenticationEntryPoint(authenticationEntryPoint));
+
+            http.sessionManagement(sessionManagement -> sessionManagement
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             );
 
             http.authorizeHttpRequests(httpRequests -> httpRequests
