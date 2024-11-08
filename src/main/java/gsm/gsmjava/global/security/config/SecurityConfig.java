@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,35 +25,31 @@ public class SecurityConfig {
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final CustomAuthenticationEntryPointHandler authenticationEntryPoint;
 
-    @Configuration
-    @EnableWebSecurity
-    public class LocalSecurityConfig {
-        @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-            http.formLogin(AbstractHttpConfigurer::disable)
-                    .httpBasic(AbstractHttpConfigurer::disable);
+        http.formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable);
 
-            http.csrf(AbstractHttpConfigurer::disable)
-                    .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+        http.csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
-            http.formLogin(AbstractHttpConfigurer::disable)
-                    .httpBasic(AbstractHttpConfigurer::disable);
+        http.formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable);
 
-            http.exceptionHandling(handling -> handling
-                    .accessDeniedHandler(accessDeniedHandler)
-                    .authenticationEntryPoint(authenticationEntryPoint));
+        http.exceptionHandling(handling -> handling
+                .accessDeniedHandler(accessDeniedHandler)
+                .authenticationEntryPoint(authenticationEntryPoint));
 
-            http.sessionManagement(sessionManagement -> sessionManagement
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            );
+        http.sessionManagement(sessionManagement -> sessionManagement
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        );
 
-            http.authorizeHttpRequests(httpRequests -> httpRequests
-                    .anyRequest().permitAll()
-            );
+        http.authorizeHttpRequests(httpRequests -> httpRequests
+                .anyRequest().permitAll()
+        );
 
-            return http.build();
-        }
+        return http.build();
     }
 
     @Bean

@@ -1,6 +1,6 @@
 package gsm.gsmjava.global.manager;
 
-import gsm.gsmjava.domain.user.User;
+import gsm.gsmjava.domain.user.entity.User;
 
 public class UserManager {
 
