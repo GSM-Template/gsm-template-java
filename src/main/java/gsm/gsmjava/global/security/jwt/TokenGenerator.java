@@ -1,9 +1,7 @@
 package gsm.gsmjava.global.security.jwt;
 
 import gsm.gsmjava.global.security.jwt.dto.TokenDto;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -43,7 +41,7 @@ public class TokenGenerator {
 
     private String generateAccessToken(String email) {
         return Jwts.builder()
-                .signWith(Keys.hmacShaKeyFor(accessSecret.getBytes()), SignatureAlgorithm.ES256)
+                .signWith(Keys.hmacShaKeyFor(accessSecret.getBytes()), SignatureAlgorithm.HS256)
                 .setSubject(email)
                 .claim(TOKEN_TYPE.getContent(), ACCESS.getContent())
                 .setIssuedAt(new Date())
@@ -53,7 +51,7 @@ public class TokenGenerator {
 
     private String generateRefreshToken(String email) {
         return Jwts.builder()
-                .signWith(Keys.hmacShaKeyFor(refreshSecret.getBytes()), SignatureAlgorithm.ES256)
+                .signWith(Keys.hmacShaKeyFor(refreshSecret.getBytes()), SignatureAlgorithm.HS256)
                 .setSubject(email)
                 .claim(TOKEN_TYPE.getContent(), REFRESH.getContent())
                 .setIssuedAt(new Date())
@@ -65,7 +63,7 @@ public class TokenGenerator {
         return getTokenBody(refreshToken, Keys.hmacShaKeyFor(refreshSecret.getBytes())).getSubject();
     }
 
-    private Claims getTokenBody(String token, Key secret) {
+    public static Claims getTokenBody(String token, Key secret) {
         return Jwts.parserBuilder()
                 .setSigningKey(secret)
                 .build()

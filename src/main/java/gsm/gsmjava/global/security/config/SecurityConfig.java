@@ -1,8 +1,9 @@
 package gsm.gsmjava.global.security.config;
 
+import gsm.gsmjava.global.filter.ExceptionHandlerFilter;
 import gsm.gsmjava.global.security.handler.CustomAccessDeniedHandler;
 import gsm.gsmjava.global.security.handler.CustomAuthenticationEntryPointHandler;
-import gsm.gsmjava.global.security.jwt.filter.JwtReqFilter;
+import gsm.gsmjava.global.filter.JwtReqFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,7 @@ public class SecurityConfig {
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final CustomAuthenticationEntryPointHandler authenticationEntryPoint;
     private final JwtReqFilter jwtReqFilter;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -49,8 +51,10 @@ public class SecurityConfig {
         );
 
         http.addFilterBefore(jwtReqFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(exceptionHandlerFilter, JwtReqFilter.class);
 
         http.authorizeHttpRequests(httpRequests -> httpRequests
+                .requestMatchers("/auth").authenticated()
                 .anyRequest().permitAll()
         );
 

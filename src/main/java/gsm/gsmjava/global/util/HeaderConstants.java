@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum HeaderConstants {
     AUTHORIZATION("Authorization"),
-    REFRESH_TOKEN("Refresh_Token");
+    REFRESH_TOKEN("Refresh_Token"),
+    BEARER_PREFIX("Bearer ");
 
     private String name;
 }

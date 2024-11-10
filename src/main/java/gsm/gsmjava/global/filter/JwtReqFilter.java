@@ -1,4 +1,4 @@
-package gsm.gsmjava.global.security.jwt.filter;
+package gsm.gsmjava.global.filter;
 
 import gsm.gsmjava.global.security.jwt.TokenParser;
 import jakarta.servlet.FilterChain;
@@ -14,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 import static gsm.gsmjava.global.util.HeaderConstants.AUTHORIZATION;
+import static gsm.gsmjava.global.util.HeaderConstants.BEARER_PREFIX;
 
 @Component
 @RequiredArgsConstructor
@@ -26,6 +27,8 @@ public class JwtReqFilter extends OncePerRequestFilter {
         String accessToken = request.getHeader(AUTHORIZATION.getName());
 
         if (accessToken != null) {
+            accessToken = accessToken.replaceFirst(BEARER_PREFIX.getName(), "").trim();
+
             UsernamePasswordAuthenticationToken authentication = tokenParser.authenticate(accessToken);
             SecurityContextHolder.clearContext();
             SecurityContextHolder.getContext().setAuthentication(authentication);
