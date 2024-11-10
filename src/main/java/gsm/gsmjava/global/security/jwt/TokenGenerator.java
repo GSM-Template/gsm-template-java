@@ -1,12 +1,14 @@
 package gsm.gsmjava.global.security.jwt;
 
 import gsm.gsmjava.global.security.jwt.dto.TokenDto;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.util.Date;
 
 import static gsm.gsmjava.global.security.jwt.properties.JwtProperties.*;
@@ -26,32 +28,48 @@ public class TokenGenerator {
     @Value("${jwt.refreshExp}")
     private int refreshExp;
 
-    public TokenDto generateToken(Long userId) {
+    public TokenDto generateToken(String email) {
         return TokenDto.builder()
-                .accessToken(generateAccessToken(userId))
-                .refreshToken(generateRefreshToken(userId))
+                .accessToken(generateAccessToken(email))
+                .refreshToken(generateRefreshToken(email))
                 .accessTokenExp(accessExp)
                 .refreshTokenExp(refreshExp)
                 .build();
     }
 
-    private String generateAccessToken(Long userId) {
+    public String getEmailFromRefreshToken(String token) {
+        return getRefreshTokenSubject(token);
+    }
+
+    private String generateAccessToken(String email) {
         return Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(accessSecret.getBytes()), SignatureAlgorithm.ES256)
-                .setSubject(String.valueOf(userId))
+                .setSubject(email)
                 .claim(TOKEN_TYPE.getContent(), ACCESS.getContent())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + accessExp * 1000L))
                 .compact();
     }
 
-    private String generateRefreshToken(Long userId) {
+    private String generateRefreshToken(String email) {
         return Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(refreshSecret.getBytes()), SignatureAlgorithm.ES256)
-                .setSubject(String.valueOf(userId))
+                .setSubject(email)
                 .claim(TOKEN_TYPE.getContent(), REFRESH.getContent())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + refreshExp * 1000L))
                 .compact();
+    }
+
+    private String getRefreshTokenSubject(String refreshToken) {
+        return getTokenBody(refreshToken, Keys.hmacShaKeyFor(refreshSecret.getBytes())).getSubject();
+    }
+
+    private Claims getTokenBody(String token, Key secret) {
+        return Jwts.parserBuilder()
+                .setSigningKey(secret)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }

@@ -9,9 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static gsm.gsmjava.global.security.jwt.properties.JwtProperties.ACCESS;
-import static gsm.gsmjava.global.security.jwt.properties.JwtProperties.REFRESH;
-
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
@@ -20,11 +17,11 @@ public class AuthController {
 
     @PatchMapping("/refresh")
     public ResponseEntity<Void> reissueToken(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = request.getHeader(REFRESH.getContent());
+        String refreshToken = request.getHeader("Refresh_Token");
         TokenDto tokenDto = reissueTokenService.execute(refreshToken);
 
-        response.setHeader(ACCESS.getContent(), tokenDto.getAccessToken());
-        response.setHeader(REFRESH.getContent(), tokenDto.getRefreshToken());
+        response.setHeader("Authorization", tokenDto.getAccessToken());
+        response.setHeader("Refresh_Token", tokenDto.getRefreshToken());
 
         return ResponseEntity.noContent().build();
     }
