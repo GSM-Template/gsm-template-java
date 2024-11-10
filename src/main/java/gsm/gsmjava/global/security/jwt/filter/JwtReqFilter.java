@@ -13,6 +13,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static gsm.gsmjava.global.util.HeaderConstants.AUTHORIZATION;
+
 @Component
 @RequiredArgsConstructor
 public class JwtReqFilter extends OncePerRequestFilter {
@@ -21,7 +23,7 @@ public class JwtReqFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String accessToken = request.getHeader("Authorization");
+        String accessToken = request.getHeader(AUTHORIZATION.getName());
 
         if (accessToken != null) {
             UsernamePasswordAuthenticationToken authentication = tokenParser.authenticate(accessToken);
