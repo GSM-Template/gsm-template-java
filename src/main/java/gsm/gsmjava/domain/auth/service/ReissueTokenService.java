@@ -6,8 +6,8 @@ import gsm.gsmjava.domain.user.repository.UserRepository;
 import gsm.gsmjava.global.error.GlobalException;
 import gsm.gsmjava.global.security.jwt.TokenGenerator;
 import gsm.gsmjava.global.security.jwt.dto.TokenDto;
+import gsm.gsmjava.global.security.jwt.properties.JwtEnvironment;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +18,7 @@ import static gsm.gsmjava.global.util.HeaderConstants.BEARER_PREFIX;
 @RequiredArgsConstructor
 public class ReissueTokenService {
 
-    @Value("${jwt.refreshExp}")
-    private int refreshExp;
+    private final JwtEnvironment jwtEnv;
 
     private final TokenGenerator tokenGenerator;
     private final UserRepository userRepository;
@@ -55,7 +54,7 @@ public class ReissueTokenService {
         RefreshToken refreshToken = RefreshToken.builder()
                 .userId(userId)
                 .token(token)
-                .expirationTime(refreshExp)
+                .expirationTime(jwtEnv.refreshExp())
                 .build();
 
         refreshTokenRepository.save(refreshToken);
