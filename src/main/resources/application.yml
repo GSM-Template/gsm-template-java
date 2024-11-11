@@ -8,7 +8,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: ${DDL_AUTO}
     properties:
       hibernate:
         default_batch_fetch_size: 1000

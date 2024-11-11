@@ -54,7 +54,6 @@ public class SecurityConfig {
         http.addFilterBefore(exceptionHandlerFilter, JwtReqFilter.class);
 
         http.authorizeHttpRequests(httpRequests -> httpRequests
-                .requestMatchers("/auth").authenticated()
                 .anyRequest().permitAll()
         );
 
