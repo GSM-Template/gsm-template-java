@@ -1,4 +1,4 @@
-package gsm.gsmjava.global.manager;
+package gsm.gsmjava.global.util;
 
 import gsm.gsmjava.domain.user.entity.User;
 import gsm.gsmjava.domain.user.repository.UserRepository;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserManager {
+public class UserUtil {
 
     private final UserRepository userRepository;
 
