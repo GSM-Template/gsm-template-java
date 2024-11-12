@@ -12,23 +12,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static gsm.gsmjava.global.util.HeaderConstants.BEARER_PREFIX;
-
 @Service
 @RequiredArgsConstructor
 public class ReissueTokenService {
 
     private final JwtEnvironment jwtEnv;
-
     private final TokenGenerator tokenGenerator;
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+
+    private final String BEARER_PREFIX = "Bearer ";
 
     @Transactional
     public TokenDto execute(String token) {
         isNotNullRefreshToken(token);
 
-        String removePrefixToken = token.replaceFirst(BEARER_PREFIX.getName(), "").trim();
+        String removePrefixToken = token.replaceFirst(BEARER_PREFIX, "").trim();
         RefreshToken refreshToken = refreshTokenRepository.findByToken(removePrefixToken)
                 .orElseThrow(() -> new GlobalException("존재하지 않는 refresh token 입니다.", HttpStatus.NOT_FOUND));
 

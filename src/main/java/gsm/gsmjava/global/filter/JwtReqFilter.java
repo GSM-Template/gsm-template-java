@@ -13,21 +13,21 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static gsm.gsmjava.global.util.HeaderConstants.AUTHORIZATION;
-import static gsm.gsmjava.global.util.HeaderConstants.BEARER_PREFIX;
-
 @Component
 @RequiredArgsConstructor
 public class JwtReqFilter extends OncePerRequestFilter {
 
     private final TokenParser tokenParser;
 
+    private final String AUTHORIZATION_HEADER = "Authorization";
+    private final String BEARER_PREFIX = "Bearer ";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String accessToken = request.getHeader(AUTHORIZATION.getName());
+        String accessToken = request.getHeader(AUTHORIZATION_HEADER);
 
         if (accessToken != null) {
-            accessToken = accessToken.replaceFirst(BEARER_PREFIX.getName(), "").trim();
+            accessToken = accessToken.replaceFirst(BEARER_PREFIX, "").trim();
 
             UsernamePasswordAuthenticationToken authentication = tokenParser.authenticate(accessToken);
             SecurityContextHolder.clearContext();
