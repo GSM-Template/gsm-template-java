@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> noHandlerFoundException(NoHandlerFoundException ex) {
         log.warn("Not Found Endpoint : {}", ex.getMessage());
         log.trace("Not Found Endpoint Details : ", ex);
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErrorResponse(HttpStatus.NOT_FOUND.getReasonPhrase()));
     }
 

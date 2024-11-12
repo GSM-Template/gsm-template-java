@@ -1,5 +1,6 @@
-package gsm.gsmjava.domain.user;
+package gsm.gsmjava.domain.user.entity;
 
+import gsm.gsmjava.domain.user.type.Authority;
 import jakarta.persistence.*;
 import lombok.*;
 
