@@ -47,41 +47,41 @@ spring security UserDetailsService를 구현하기 위해 임시로 user의 repo
 
 ```yml
 spring:
-    mvc:
-        throw-exception-if-no-handler-found: true
-    web:
-        resources:
-            add-mappings: false
-    jpa:
-        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-        show-sql: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+        add-mappings: false
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    hibernate:
+        ddl-auto: ${DDL_AUTO}
+    properties:
         hibernate:
-            ddl-auto: ${DDL_AUTO}
-        properties:
-            hibernate:
-                default_batch_fetch_size: 1000
-                dialect: org.hibernate.dialect.MySQLDialect
+            default_batch_fetch_size: 1000
+            dialect: org.hibernate.dialect.MySQLDialect
     
-    datasource:
-        url: jdbc:mysql://${DB_URL}/${DB_NAME}?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-        username: ${DB_USER}
-        password: ${DB_PASSWORD}
-        driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource:
+    url: jdbc:mysql://${DB_URL}/${DB_NAME}?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
     
-    data:
-        redis:
-            host: ${REDIS_HOST}
-            port: ${REDIS_PORT}
+  data:
+    redis:
+        host: ${REDIS_HOST}
+        port: ${REDIS_PORT}
     
-    sql:
-        init:
-            mode: always
+  sql:
+    init:
+      mode: always
 
 jwt:
-    accessSecret: ${ACCESS_SECRET}
-    refreshSecret: ${REFRESH_SECRET}
-    accessExp: ${ACCESS_EXP}
-    refreshExp: ${REFRESH_EXP}
+  accessSecret: ${ACCESS_SECRET}
+  refreshSecret: ${REFRESH_SECRET}
+  accessExp: ${ACCESS_EXP}
+  refreshExp: ${REFRESH_EXP}
 ```
 
 위와 같이 설정이 되어있습니다. `${}` 으로 감싸져있는 환경변수 이름을 확인하시고 알맞는 값을 넣어주세요
