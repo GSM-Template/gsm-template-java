@@ -51,16 +51,16 @@ spring:
     throw-exception-if-no-handler-found: true
   web:
     resources:
-        add-mappings: false
+      add-mappings: false
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
     hibernate:
-        ddl-auto: ${DDL_AUTO}
+      ddl-auto: ${DDL_AUTO}
     properties:
-        hibernate:
-            default_batch_fetch_size: 1000
-            dialect: org.hibernate.dialect.MySQLDialect
+      hibernate:
+        default_batch_fetch_size: 1000
+        dialect: org.hibernate.dialect.MySQLDialect
     
   datasource:
     url: jdbc:mysql://${DB_URL}/${DB_NAME}?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
@@ -70,8 +70,8 @@ spring:
     
   data:
     redis:
-        host: ${REDIS_HOST}
-        port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
     
   sql:
     init:
