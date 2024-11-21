@@ -20,33 +20,33 @@ public class TokenGenerator {
     private final String ACCESS_TOKEN = "accessToken";
     private final String REFRESH_TOKEN = "refreshToken";
 
-    public TokenDto generateToken(String email) {
+    public TokenDto generateToken(String userId) {
         return TokenDto.builder()
-                .accessToken(generateAccessToken(email))
-                .refreshToken(generateRefreshToken(email))
+                .accessToken(generateAccessToken(userId))
+                .refreshToken(generateRefreshToken(userId))
                 .accessTokenExp(jwtEnv.accessExp())
                 .refreshTokenExp(jwtEnv.refreshExp())
                 .build();
     }
 
-    public String getEmailFromRefreshToken(String token) {
+    public String getUserIdFromRefreshToken(String token) {
         return getRefreshTokenSubject(token);
     }
 
-    private String generateAccessToken(String email) {
+    private String generateAccessToken(String userId) {
         return Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(jwtEnv.accessSecret().getBytes()), SignatureAlgorithm.HS256)
-                .setSubject(email)
+                .setSubject(userId)
                 .claim(TOKEN_TYPE, ACCESS_TOKEN)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtEnv.accessExp() * 1000L))
                 .compact();
     }
 
-    private String generateRefreshToken(String email) {
+    private String generateRefreshToken(String userId) {
         return Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(jwtEnv.refreshSecret().getBytes()), SignatureAlgorithm.HS256)
-                .setSubject(email)
+                .setSubject(userId)
                 .claim(TOKEN_TYPE, REFRESH_TOKEN)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtEnv.refreshExp() * 1000L))

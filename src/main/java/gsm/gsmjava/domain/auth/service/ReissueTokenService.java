@@ -31,10 +31,10 @@ public class ReissueTokenService {
         RefreshToken refreshToken = refreshTokenRepository.findByToken(removePrefixToken)
                 .orElseThrow(() -> new GlobalException("존재하지 않는 refresh token 입니다.", HttpStatus.NOT_FOUND));
 
-        String email = tokenGenerator.getEmailFromRefreshToken(refreshToken.getToken());
-        isExistsUser(email);
+        String userId = tokenGenerator.getUserIdFromRefreshToken(refreshToken.getToken());
+        isExistsUser(userId);
 
-        TokenDto tokenDto = tokenGenerator.generateToken(email);
+        TokenDto tokenDto = tokenGenerator.generateToken(userId);
         saveNewRefreshToken(tokenDto.getRefreshToken(), refreshToken.getUserId());
         return tokenDto;
     }
@@ -44,8 +44,8 @@ public class ReissueTokenService {
             throw new GlobalException("refresh token을 요청 헤더에 포함시켜 주세요.", HttpStatus.BAD_REQUEST);
     }
 
-    private void isExistsUser(String email) {
-        if (!userRepository.existsByEmail(email))
+    private void isExistsUser(String userId) {
+        if (!userRepository.existsById(Long.valueOf(userId)))
             throw new GlobalException("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
     }
 
