@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static gsm.gsmjava.global.filter.JwtReqFilter.BEARER_PREFIX;
+
 @Service
 @RequiredArgsConstructor
 public class ReissueTokenService {
@@ -20,8 +22,6 @@ public class ReissueTokenService {
     private final TokenGenerator tokenGenerator;
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
-
-    private final String BEARER_PREFIX = "Bearer ";
 
     @Transactional
     public TokenDto execute(String token) {
