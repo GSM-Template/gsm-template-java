@@ -19,12 +19,8 @@ public class TokenParser {
     private final CustomUserDetailsService customUserDetailsService;
 
     public UsernamePasswordAuthenticationToken authenticate(String accessToken) {
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(getUserEmail(accessToken));
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(getAccessTokenSubject(accessToken));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
-
-    private String getUserEmail(String accessToken) {
-        return getAccessTokenSubject(accessToken);
     }
 
     private String getAccessTokenSubject(String accessToken) {
